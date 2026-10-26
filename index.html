@@ -256,6 +256,12 @@
       margin-bottom: 34px;
     }
 
+    .notes-disclaimer {
+      margin: -20px 0 28px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
     .filter-button {
       min-height: 39px;
       padding: 8px 17px;
@@ -315,16 +321,16 @@
     .product-visual {
       position: relative;
       overflow: hidden;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 4 / 5;
       background:
-        radial-gradient(ellipse at 50% 48%, rgba(198, 166, 106, .2), transparent 38%),
-        linear-gradient(135deg, #26231d, #10100f 70%);
+        radial-gradient(ellipse at 50% 48%, rgba(198, 166, 106, .12), transparent 48%),
+        #f2f0ec;
     }
 
     .product-visual::after {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, .48));
+      background: linear-gradient(180deg, transparent 78%, rgba(0, 0, 0, .08));
       content: "";
       pointer-events: none;
     }
@@ -333,8 +339,9 @@
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      opacity: .86;
+      padding: 8px;
+      object-fit: contain;
+      opacity: 1;
       transition: transform .65s cubic-bezier(.2, .65, .3, 1), opacity .35s ease;
     }
 
@@ -787,6 +794,7 @@
         <button class="filter-button" type="button" data-filter="Nicho" aria-pressed="false">Nicho</button>
         <button class="filter-button" type="button" data-filter="Femenino" aria-pressed="false">Femeninos</button>
       </nav>
+      <p class="notes-disclaimer">Las notas son orientativas y pueden variar según concentración, reformulación y mercado. Algunas versiones no pudieron identificarse con seguridad.</p>
       <div class="product-grid" id="product-grid" aria-live="polite"></div>
     </section>
     <section class="wholesale" aria-labelledby="wholesale-title">
@@ -828,11 +836,164 @@
   </a>
 
   <script>
-    const notasPorCategoria = {
-      "Diseñador": { Salida: "Bergamota y notas aromáticas", Corazón: "Especias y flores", Fondo: "Maderas, ámbar y almizcle" },
-      "Árabe": { Salida: "Especias cálidas y cítricos", Corazón: "Ámbar y flores", Fondo: "Oud, vainilla y almizcle" },
-      "Nicho": { Salida: "Cítricos y especias", Corazón: "Flores y maderas nobles", Fondo: "Ámbar, resinas y almizcle" },
-      "Femenino": { Salida: "Frutas y cítricos", Corazón: "Flores blancas y jazmín", Fondo: "Vainilla, maderas y almizcle" }
+    const notasPorFragancia = {
+      "Dior Sauvage EDP": { Salida: "Bergamota, pimienta", Corazón: "Lavanda, anís estrellado", Fondo: "Vainilla, ambroxan, notas amaderadas" },
+      "Dior Pour Homme Intense": { Salida: "Lavanda", Corazón: "Iris, ambreta", Fondo: "Cedro de Virginia, vetiver, notas amaderadas" },
+      "Dior Sauvage Elixir (100 ml)": { Salida: "Canela, nuez moscada, cardamomo", Corazón: "Lavanda, regaliz", Fondo: "Sándalo, ámbar, pachuli" },
+      "Le Male Elixir (125 ml)": { Salida: "Lavanda, menta", Corazón: "Vainilla, benjuí", Fondo: "Miel, haba tonka, tabaco" },
+      "Le Male Le Parfum (125 ml)": { Salida: "Cardamomo", Corazón: "Lavanda, iris", Fondo: "Vainilla, notas orientales, maderas" },
+      "Le Beau Le Parfum (125 ml)": { Salida: "Piña, iris, jengibre", Corazón: "Coco, notas amaderadas", Fondo: "Haba tonka, sándalo, ámbar" },
+      "Le Beau Paradise Garden (125 ml)": { Salida: "Agua de coco, jengibre, menta", Corazón: "Higo verde, notas acuáticas", Fondo: "Sándalo, haba tonka, vainilla" },
+      "1 Million (Clásico)": { Salida: "Mandarina sanguina, menta, pomelo", Corazón: "Canela, rosa", Fondo: "Ámbar, cuero, maderas" },
+      "1 Million Elixir Parfum Intense": { Salida: "Manzana, davana, abrótano", Corazón: "Rosa de Damasco, osmanto", Fondo: "Vainilla absoluta, haba tonka, pachuli" },
+      "Invictus Victory": { Salida: "Limón, pimienta rosa, incienso", Corazón: "Lavanda, incienso", Fondo: "Vainilla, haba tonka, ámbar" },
+      "Invictus Parfum": { Salida: "Notas marinas, lavanda, pimienta rosa", Corazón: "Jabón negro, hojas de violeta", Fondo: "Ámbar, madera de guayaco, sándalo" },
+      "Y Eau de Parfum (YSL Y)": { Salida: "Manzana, jengibre, bergamota", Corazón: "Salvia, bayas de enebro", Fondo: "Amberwood, haba tonka, cedro" },
+      "Versace Eros EDP": { Salida: "Menta, limón, manzana", Corazón: "Geranio, salvia, ambroxan", Fondo: "Vainilla, cedro, pachuli" },
+      "Versace Eros EDT": { Salida: "Menta, limón, manzana verde", Corazón: "Haba tonka, geranio", Fondo: "Vainilla, cedro, musgo de roble" },
+      "Versace Dylan Blue (200 ml)": { Salida: "Bergamota, pomelo, hojas de higuera", Corazón: "Ambrox, pimienta negra, pachuli", Fondo: "Almizcle, incienso, haba tonka" },
+      "Acqua Di Gio EDP": { Salida: "Notas marinas, bergamota, mandarina verde", Corazón: "Salvia, geranio", Fondo: "Pachuli, vetiver, notas minerales" },
+      "Acqua Di Gio Profondo EDP (125 ml)": { Salida: "Notas marinas, aquozone, bergamota", Corazón: "Romero, lavanda", Fondo: "Almizcle, pachulí, ámbar" },
+      "Stronger With You Intensely": { Salida: "Pimienta rosa, enebro, violeta", Corazón: "Toffee, canela", Fondo: "Vainilla, haba tonka, gamuza" },
+      "Stronger With You Powerfully": { Salida: "Mandarina, pimienta rosa, lavanda", Corazón: "Canela, salvia", Fondo: "Vainilla, castaña, ámbar" },
+      "Uomo Born In Roma": { Salida: "Notas minerales, hojas de violeta, sal", Corazón: "Jengibre, salvia", Fondo: "Vetiver, maderas, notas minerales" },
+      "Uomo Born In Roma Intense": { Salida: "Vainilla, lavanda, vetiver", Corazón: "Lavanda, vetiver", Fondo: "Vainilla, ámbar, maderas" },
+      "Bad Boy Le Parfum": { Salida: "Cannabis, pomelo, pimienta negra", Corazón: "Pimienta negra, geranio", Fondo: "Vetiver, cuero, maderas" },
+      "Bad Boy Cobalt Absolue": { Salida: "Pimienta rosa, lavanda, ciruela", Corazón: "Geranio, trufa negra", Fondo: "Vetiver, cedro, roble" },
+      "212 VIP Black Elixir": { Salida: "Absenta, lavanda, anís", Corazón: "Vainilla, notas aromáticas", Fondo: "Almizcle, maderas, ámbar" },
+      "Most Wanted Parfum": { Salida: "Jengibre, especias, notas cítricas", Corazón: "Notas amaderadas, especias", Fondo: "Vainilla bourbon, ámbar" },
+      "Wanted EDT": { Salida: "Limón, jengibre, lavanda", Corazón: "Cardamomo, enebro", Fondo: "Haba tonka, vetiver, ámbar" },
+      "Toy Boy 2": { Salida: "Versión exacta no identificada con seguridad", Corazón: "No disponible", Fondo: "No disponible" },
+      "Khamrah": { Salida: "Canela, nuez moscada, bergamota", Corazón: "Dátiles, praliné", Fondo: "Vainilla, haba tonka, benjuí" },
+      "Khamrah Qahwa": { Salida: "Canela, cardamomo, jengibre", Corazón: "Praliné, frutas confitadas", Fondo: "Café, vainilla, haba tonka" },
+      "Asad (Clásico)": { Salida: "Pimienta negra, piña, tabaco", Corazón: "Café, pachulí, iris", Fondo: "Vainilla, ámbar, maderas secas" },
+      "Asad Bourbon": { Salida: "Pimienta rosa, lavanda, ciruela mirabel", Corazón: "Cacao, davana", Fondo: "Vainilla bourbon, ámbar, vetiver" },
+      "Asad Elixir": { Salida: "Pirámide exacta no confirmada con suficiente certeza", Corazón: "No disponible", Fondo: "No disponible" },
+      "Art of Universe": { Salida: "Bergamota, limón, notas frutales", Corazón: "Notas aromáticas, especias", Fondo: "Ámbar, almizcle, maderas" },
+      "Club de Nuit Intense Man (EDP)": { Salida: "Limón, piña, bergamota", Corazón: "Abedul, jazmín", Fondo: "Almizcle, pachulí, vainilla" },
+      "Sky Mandarin": { Salida: "Mandarina, cítricos, notas frutales", Corazón: "Notas aromáticas, especias", Fondo: "Almizcle, ámbar, maderas" },
+      "Sky Mandarin Elixir": { Salida: "Pirámide exacta no confirmada con suficiente certeza", Corazón: "No disponible", Fondo: "No disponible" },
+      "Odyssey Mega": { Salida: "Menta, naranja, limón", Corazón: "Jengibre, salvia", Fondo: "Ambroxan, haba tonka, cedro" },
+      "9 PM": { Salida: "Manzana, canela, lavanda", Corazón: "Flor de azahar, lirio de los valles", Fondo: "Vainilla, haba tonka, ámbar" },
+      "9 PM Elixir": { Salida: "Cardamomo, nuez moscada, elemí", Corazón: "Pimienta de Jamaica, cuero", Fondo: "Vainilla, pachulí, ládano" },
+      "9 PM Rebel": { Salida: "Piña, manzana Granny Smith, mandarina", Corazón: "Musgo de roble, cedro", Fondo: "Madera seca, ámbar gris, caramelo" },
+      "9 PM Night Out": { Salida: "Bergamota, manzana, notas especiadas", Corazón: "Notas aromáticas, maderas", Fondo: "Ámbar, almizcle, vainilla" },
+      "Hawas Ice": { Salida: "Manzana, limón, bergamota", Corazón: "Ciruela, flor de azahar", Fondo: "Almizcle, ámbar gris, maderas" },
+      "Hawas Malibu": { Salida: "Piña, cítricos, notas tropicales", Corazón: "Notas acuáticas, aromáticas", Fondo: "Almizcle, ámbar, maderas" },
+      "Hawas Elixir": { Salida: "Bergamota, menta, manzana", Corazón: "Notas acuáticas, especias", Fondo: "Ámbar, almizcle, maderas" },
+      "Hawas Black": { Salida: "Bergamota, limón, especias", Corazón: "Notas aromáticas, maderas", Fondo: "Ámbar, almizcle, pachuli" },
+      "Hawas Tropical": { Salida: "Cítricos, frutas tropicales, notas acuáticas", Corazón: "Notas aromáticas, florales", Fondo: "Almizcle, ámbar, maderas" },
+      "Amber Oud Gold Edition": { Salida: "Bergamota, notas verdes, cítricos", Corazón: "Melón, piña", Fondo: "Almizcle, vainilla, notas amaderadas" },
+      "Bharara King": { Salida: "Naranja, limón, bergamota", Corazón: "Notas afrutadas, especias", Fondo: "Vainilla, almizcle blanco, ámbar" },
+      "Rey de Reyes": { Salida: "Cítricos, frutas, bergamota", Corazón: "Notas afrutadas, florales", Fondo: "Ámbar, almizcle, maderas" },
+      "Veneno Negro": { Salida: "Bergamota, especias, notas frutales", Corazón: "Notas aromáticas, florales", Fondo: "Ámbar, vainilla, maderas" },
+      "Liquid Brun": { Salida: "Canela, flor de azahar, cardamomo", Corazón: "Vainilla bourbon, elemi", Fondo: "Praliné, ambroxan, almizcle" },
+      "Baccarat Rouge 540": { Salida: "Azafrán, jazmín, notas cítricas", Corazón: "Ámbar gris, notas amaderadas", Fondo: "Resina de abeto, cedro, almizcle" },
+      "Aventus Absolu": { Salida: "Piña, pomelo, bergamota", Corazón: "Pachulí, pimienta rosa", Fondo: "Musgo de roble, ámbar gris, maderas" },
+      "Aventus": { Salida: "Limón, pimienta rosa, manzana", Corazón: "Piña, pachulí", Fondo: "Abedul, almizcle, musgo de roble" },
+      "Soleil Blanc EDP": { Salida: "Pistacho, bergamota, cardamomo", Corazón: "Ylang-ylang, jazmín", Fondo: "Ámbar, haba tonka, benjuí" },
+      "Rose Prick EDP": { Salida: "Pimienta de Sichuan, cúrcuma, cúrcuma roja", Corazón: "Rosa de mayo, rosa de Bulgaria", Fondo: "Pachuli, haba tonka, notas amaderadas" },
+      "Layton Exclusif": { Salida: "Almendra, mandarina, bergamota", Corazón: "Geranio, rosa, civeta", Fondo: "Madera de guayaco, oud, vainilla" },
+      "Erba Pura": { Salida: "Naranja siciliana, bergamota, limón", Corazón: "Frutas mediterráneas", Fondo: "Almizcle blanco, ámbar, vainilla" },
+      "Naxos": { Salida: "Lavanda, bergamota, limón", Corazón: "Miel, canela, jazmín", Fondo: "Hojas de tabaco, vainilla, haba tonka" },
+      "Miss Dior EDP": { Salida: "Iris, peonía, lirio de los valles", Corazón: "Rosa, albaricoque", Fondo: "Vainilla, almizcle, maderas" },
+      "Good Girl EDP (Clásico 80 ml)": { Salida: "Almendra, café, bergamota", Corazón: "Nardo, jazmín sambac", Fondo: "Haba tonka, cacao, vainilla" },
+      "Good Girl Blush (80 ml)": { Salida: "Bergamota, mandarina amarga, almendra", Corazón: "Peonía, ylang-ylang", Fondo: "Vainilla, haba tonka, almizcle" },
+      "212 VIP Rosé (80 ml)": { Salida: "Champagne rosé, pimienta rosa, frutas", Corazón: "Flor de durazno, rosa", Fondo: "Almizcle blanco, notas amaderadas" },
+      "My Way (Sunny Vanilla EDP)": { Salida: "Bergamota, flor de azahar", Corazón: "Tuberosa, jazmín", Fondo: "Vainilla bourbon, almizcle blanco, cedro" },
+      "Acqua Di Gioia EDP": { Salida: "Limón primofiore, menta, cítricos", Corazón: "Jazmín de agua, peonía", Fondo: "Cedro, ládano, azúcar moreno" },
+      "La Belle EDP": { Salida: "Pera, bergamota, notas frutales", Corazón: "Vetiver, notas florales", Fondo: "Vainilla, ámbar, maderas" },
+      "Scandal Elixir": { Salida: "Mora, iris, notas frutales", Corazón: "Rosa, jazmín", Fondo: "Vainilla, pachulí, sándalo" },
+      "The Only One Intense": { Salida: "Mandarina, neroli, manzana verde", Corazón: "Jazmín, flor de azahar", Fondo: "Vainilla, cedro, cachemira" },
+      "Burberry Her EDP": { Salida: "Fresa, frambuesa, cereza negra", Corazón: "Violeta, jazmín", Fondo: "Almizcle, ámbar, madera" },
+      "Black Orchid EDP": { Salida: "Trufa, gardenia, grosella negra", Corazón: "Orquídea negra, especias, loto", Fondo: "Chocolate, pachuli, incienso" },
+      "Yara Candy": { Salida: "Mandarina verde, grosella negra, cítricos", Corazón: "Caramelo efervescente de fresa, gardenia", Fondo: "Sándalo, vainilla, almizcle" },
+      "Yara Pink": { Salida: "Orquídea, heliotropo, mandarina", Corazón: "Acorde gourmand, frutas tropicales", Fondo: "Vainilla, sándalo, almizcle" },
+      "Yara Elixir": { Salida: "Fresa, grosella negra, notas frutales", Corazón: "Caramelo, flores blancas", Fondo: "Vainilla, almizcle, ámbar" },
+      "Eclaire": { Salida: "Caramelo, leche, azúcar", Corazón: "Miel, flores blancas", Fondo: "Vainilla, praliné, almizcle" },
+      "Her Confession": { Salida: "Canela, notas especiadas, incienso", Corazón: "Jazmín, tuberosa", Fondo: "Vainilla, haba tonka, incienso" },
+      "Yum Yum": { Salida: "Frutos rojos, cítricos, notas dulces", Corazón: "Flores blancas, caramelo", Fondo: "Vainilla, almizcle, ámbar" },
+      "Club de Nuit Woman": { Salida: "Naranja, pomelo, bergamota", Corazón: "Rosa, jazmín, lichi", Fondo: "Pachuli, vainilla, almizcle" }
+    };
+    notasPorFragancia["Baccarat Rouge 540 tester"] = notasPorFragancia["Baccarat Rouge 540"];
+    const imagenesPorFragancia = {
+      "Dior Sauvage EDP": "img/dior-sauvage-edp.jpg",
+      "Dior Pour Homme Intense": "img/dior-homme-intense.jpg",
+      "Dior Sauvage Elixir (100 ml)": "img/dior-sauvage-elixir.jpg",
+      "Le Male Elixir (125 ml)": "img/jean-paul-gaultier-le-male-elixir.jpg",
+      "Le Male Le Parfum (125 ml)": "img/jean-paul-gaultier-le-male-le-parfum.jpg",
+      "Le Beau Le Parfum (125 ml)": "img/le-beau-le-parfum.jpg",
+      "Le Beau Paradise Garden (125 ml)": "img/paradise-garden.jpg",
+      "1 Million (Clásico)": "img/one-million-clasico.jpg",
+      "1 Million Elixir Parfum Intense": "img/one-million-elixir-parfum-intense.jpg",
+      "Invictus Victory": "img/rabanne-invictus-victory.jpg",
+      "Invictus Parfum": "img/perfume-paco-rabanne-invictus-parfuml.jpg",
+      "Y Eau de Parfum (YSL Y)": "img/saint-laurent-y.jpg",
+      "Versace Eros EDP": "img/EROS-edp.avif",
+      "Versace Eros EDT": "img/eros-edt.avif",
+      "Versace Dylan Blue (200 ml)": "img/dylan-blue.jpg",
+      "Acqua Di Gio EDP": "img/armani-acqua-di-gio-eau-de-parfum.jpg",
+      "Acqua Di Gio Profondo EDP (125 ml)": "img/aqua di gio profondo.jpg",
+      "Stronger With You Intensely": "img/Emporio Armani Stronger With You Intensely.jpg",
+      "Stronger With You Powerfully": "img/Emporio Armani Stronger With You Powerfully.jpg",
+      "Uomo Born In Roma": "img/perfume-valentino-born-in-roma.webp",
+      "Uomo Born In Roma Intense": "img/Valentino Uomo Born In Roma Intense.webp",
+      "Bad Boy Le Parfum": "img/carolina-herrera-bad-boy-le-parfum.jpg",
+      "Bad Boy Cobalt Absolue": "img/Carolina Herrera Bad Boy Cobalt Absolue.webp",
+      "212 VIP Black Elixir": "img/Carolina Herrera 212 VIP Black Elixir.webp",
+      "Most Wanted Parfum": "img/Azzaro The Most Wanted Parfum.webp",
+      "Wanted EDT": "img/Azzaro Wanted EDT.webp",
+      "Toy Boy 2": "img/Moschino Toy Boy 2.webp",
+      "Khamrah": "img/lattafa-khamrah.jpg",
+      "Khamrah Qahwa": "img/Lattafa Khamrah Qahwa.webp",
+      "Asad (Clásico)": "img/Lattafa Asad clásico.jpg",
+      "Asad Bourbon": "img/Lattafa Asad Bourbon.webp",
+      "Asad Elixir": "img/Lattafa Asad Elixir.webp",
+      "Art of Universe": "img/Lattafa Art of Universe.webp",
+      "Club de Nuit Intense Man (EDP)": "img/Armaf Club de Nuit Intense Man EDP.webp",
+      "Sky Mandarin": "img/Armaf Sky Mandarin.webp",
+      "Sky Mandarin Elixir": "img/mandarin sky elixir.webp",
+      "Odyssey Mega": "img/Armaf Odyssey Mega.webp",
+      "9 PM": "img/Afnan 9 PM.webp",
+      "9 PM Elixir": "img/9pm elixir.webp",
+      "9 PM Rebel": "img/afnan-9pm-rebel.webp",
+      "9 PM Night Out": "img/9pm night out.webp",
+      "Hawas Ice": "img/Rasasi Hawas Ice.webp",
+      "Hawas Malibu": "img/Rasasi Hawas Malibu.webp",
+      "Hawas Elixir": "img/Rasasi Hawas Elixir.webp",
+      "Hawas Black": "img/Rasasi Hawas Black.webp",
+      "Hawas Tropical": "img/Rasasi Hawas Tropical.webp",
+      "Amber Oud Gold Edition": "img/Al Haramain Amber Oud Gold Edition.webp",
+      "Bharara King": "img/Bharara King.webp",
+      "Rey de Reyes": "img/Bharara Rey de Reyes.jpg",
+      "Veneno Negro": "img/French Avenue Veneno Negro.webp",
+      "Liquid Brun": "img/French Avenue Liquid Brun.webp",
+      "Baccarat Rouge 540 tester": "img/MFK Baccarat Rouge 540.webp",
+      "Aventus Absolu": "img/creed-absolu-aventus-edp.webp",
+      "Aventus": "img/Creed Aventus.jpg",
+      "Soleil Blanc EDP": "img/Tom Ford Soleil Blanc EDP.webp",
+      "Rose Prick EDP": "img/Tom Ford Rose Prick EDP.webp",
+      "Layton Exclusif": "img/Parfums de Marly Layton Exclusif.jpg",
+      "Erba Pura": "img/Xerjoff Erba Pura.webp",
+      "Naxos": "img/Xerjoff Naxos.jpg",
+      "Miss Dior EDP": "img/Dior Miss Dior EDP.webp",
+      "Good Girl EDP (Clásico 80 ml)": "img/Carolina Herrera Good Girl EDP 80 ml.jpg",
+      "Good Girl Blush (80 ml)": "img/Carolina Herrera Good Girl Blush 80 ml.webp",
+      "212 VIP Rosé (80 ml)": "img/Carolina Herrera 212 VIP Rosé 80 ml.png",
+      "My Way (Sunny Vanilla EDP)": "img/Giorgio Armani My Way Sunny Vanilla EDP.webp",
+      "Acqua Di Gioia EDP": "img/Giorgio Armani Acqua di Gioia EDP.webp",
+      "La Belle EDP": "img/Jean Paul Gaultier La Belle EDP.webp",
+      "Scandal Elixir": "img/Jean Paul Gaultier Scandal Elixir.webp",
+      "The Only One Intense": "img/Dolce & Gabbana The Only One Intense.webp",
+      "Burberry Her EDP": "img/Burberry Her EDP.webp",
+      "Black Orchid EDP": "img/Tom Ford Black Orchid EDP.webp",
+      "Yara Candy": "img/Lattafa Yara Candy.webp",
+      "Yara Pink": "img/Lattafa Yara Pink.webp",
+      "Yara Elixir": "img/Lattafa Yara Elixir.webp",
+      "Eclaire": "img/Lattafa Eclaire.webp",
+      "Her Confession": "img/Lattafa Her Confession.jpg",
+      "Yum Yum": "img/Armaf Yum Yum.webp",
+      "Club de Nuit Woman": "img/Armaf Club de Nuit Woman.webp"
     };
     const perfumes = [
       { nombre: "Dior Sauvage EDP", marca: "Dior", categoria: "Diseñador", precio: 250000 },
@@ -886,7 +1047,7 @@
       { nombre: "Rey de Reyes", marca: "Bharara", categoria: "Árabe", precio: 152000 },
       { nombre: "Veneno Negro", marca: "French Avenue (Fragrance World)", categoria: "Árabe", precio: 129000 },
       { nombre: "Liquid Brun", marca: "French Avenue (Fragrance World)", categoria: "Árabe", precio: 112000 },
-      { nombre: "Baccarat Rouge 540", marca: "Maison Francis Kurkdjian", categoria: "Nicho", precio: 480000 },
+      { nombre: "Baccarat Rouge 540 tester", marca: "Maison Francis Kurkdjian", categoria: "Nicho", precio: 480000 },
       { nombre: "Aventus Absolu", marca: "Creed", categoria: "Nicho", precio: 920000 },
       { nombre: "Aventus", marca: "Creed", categoria: "Nicho", precio: 820000 },
       { nombre: "Soleil Blanc EDP", marca: "Tom Ford", categoria: "Nicho", precio: 630000 },
@@ -914,8 +1075,8 @@
       { nombre: "Club de Nuit Woman", marca: "Armaf", categoria: "Femenino", precio: 100000 }
     ].map((perfume, indice) => ({
       id: indice + 1,
-      imagen: "",
-      notas: notasPorCategoria[perfume.categoria],
+      imagen: imagenesPorFragancia[perfume.nombre],
+      notas: notasPorFragancia[perfume.nombre],
       duracion: "8-10 horas",
       ...perfume
     }));
@@ -979,7 +1140,9 @@
               : "diseñador";
       const imagenes = imagenesPorEstilo[estilo];
       const indice = indicesDeImagenes[estilo]++;
-      perfume.imagen = `https://images.unsplash.com/${imagenes[indice % imagenes.length]}?auto=format&fit=crop&w=1000&q=85`;
+      if (!perfume.imagen) {
+        perfume.imagen = `https://images.unsplash.com/${imagenes[indice % imagenes.length]}?auto=format&fit=crop&w=1000&q=85`;
+      }
     });
 
     const productGrid = document.querySelector("#product-grid");
