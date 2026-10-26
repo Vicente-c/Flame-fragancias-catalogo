@@ -994,6 +994,12 @@
       "Her Confession": "img/Lattafa Her Confession.jpg",
       "Yum Yum": "img/Armaf Yum Yum.webp",
       "Club de Nuit Woman": "img/Armaf Club de Nuit Woman.webp"
+      Object.keys(imagenesPorFragancia).forEach((key) => {
+  const ruta = imagenesPorFragancia[key];
+  if (ruta && ruta.startsWith("img/")) {
+    imagenesPorFragancia[key] = ruta.replace(/^img\//, "");
+  }
+});
     };
     const perfumes = [
       { nombre: "Dior Sauvage EDP", marca: "Dior", categoria: "Diseñador", precio: 250000 },
