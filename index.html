@@ -61,14 +61,17 @@
     }
 
     .site-header {
-      position: relative;
-      z-index: 1;
+      position: sticky;
+      top: 0;
+      z-index: 20;
       display: flex;
-      min-height: 88px;
+      min-height: 74px;
       align-items: center;
-      justify-content: center;
-      padding: 18px 24px;
+      justify-content: space-between;
+      padding: 12px max(24px, calc((100vw - 1200px) / 2));
       border-bottom: 1px solid rgba(255, 255, 255, .07);
+      background: rgba(11, 11, 10, .94);
+      backdrop-filter: blur(16px);
     }
 
     .brand {
@@ -77,7 +80,7 @@
       font-size: clamp(17px, 2vw, 21px);
       font-weight: 500;
       letter-spacing: .2em;
-      text-align: center;
+      text-align: left;
       text-decoration: none;
     }
 
@@ -91,7 +94,92 @@
       letter-spacing: .46em;
     }
 
+    .quick-nav {
+      position: relative;
+    }
+
+    .quick-nav summary {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border: 1px solid rgba(230, 208, 163, .45);
+      color: var(--gold-light);
+      cursor: pointer;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      list-style: none;
+      text-transform: uppercase;
+    }
+
+    .quick-nav summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .menu-icon,
+    .menu-icon::before,
+    .menu-icon::after {
+      display: block;
+      width: 16px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .menu-icon {
+      position: relative;
+    }
+
+    .menu-icon::before,
+    .menu-icon::after {
+      position: absolute;
+      left: 0;
+      content: "";
+    }
+
+    .menu-icon::before {
+      top: -5px;
+    }
+
+    .menu-icon::after {
+      top: 5px;
+    }
+
+    .quick-nav-list {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      display: grid;
+      width: min(250px, calc(100vw - 32px));
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: #141310;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .45);
+    }
+
+    .quick-nav:not([open]) .quick-nav-list {
+      display: none;
+    }
+
+    .quick-nav-list a {
+      padding: 13px 12px;
+      color: #e7e0d4;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .quick-nav-list a:hover,
+    .quick-nav-list a:focus-visible {
+      background: rgba(198, 166, 106, .1);
+      color: var(--gold-light);
+      outline: none;
+    }
+
     .hero {
+      isolation: isolate;
       max-width: 880px;
       margin: 0 auto;
       padding: clamp(74px, 12vw, 142px) 24px 72px;
@@ -146,6 +234,32 @@
       letter-spacing: .025em;
     }
 
+    .hero-cta {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 25px;
+      padding: 12px 21px;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      color: var(--gold-light);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    .hero-cta:hover,
+    .hero-cta:focus-visible {
+      background: var(--gold);
+      color: #17140e;
+      outline: none;
+    }
+
     .shipping-highlights {
       display: flex;
       flex-wrap: wrap;
@@ -191,6 +305,67 @@
       letter-spacing: .07em;
     }
 
+    .brands-section {
+      margin: 0 0 22px;
+      scroll-margin-top: 92px;
+    }
+
+    .brands-heading {
+      margin-bottom: 9px;
+      color: var(--gold-light);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .brands-heading::after {
+      color: var(--muted);
+      content: "  ·  DESLIZÁ PARA VER MÁS";
+      font-size: 8px;
+      font-weight: 400;
+      letter-spacing: .1em;
+    }
+
+    .brand-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 1px 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(198, 166, 106, .45) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .brand-chip {
+      min-height: 36px;
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .025);
+      color: #d3ccbf;
+      cursor: pointer;
+      font-size: 9px;
+      letter-spacing: .06em;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+    }
+
+    .brand-chip:hover,
+    .brand-chip:focus-visible {
+      border-color: var(--gold);
+      background: rgba(198, 166, 106, .1);
+      color: var(--gold-light);
+      outline: none;
+    }
+
+    .hero,
+    .brands-section,
+    .wholesale,
+    .site-footer {
+      scroll-margin-top: 92px;
+    }
+
     .product-count {
       flex: 0 0 auto;
       color: var(--muted);
@@ -208,6 +383,7 @@
       margin: 0 0 17px;
       padding: 0 16px;
       border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 8px;
       background: rgba(255, 255, 255, .035);
       color: var(--gold-light);
       transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
@@ -249,11 +425,50 @@
       opacity: 1;
     }
 
+    .sort-control {
+      display: flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 12px;
+      padding: 0 13px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .025);
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .sort-control select {
+      max-width: 70%;
+      padding: 9px 0 9px 8px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--gold-light);
+      cursor: pointer;
+      font: inherit;
+      text-align: right;
+      text-transform: none;
+    }
+
+    .sort-control select option {
+      background: #141310;
+      color: var(--ink);
+    }
+
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 9px;
       margin-bottom: 34px;
+    }
+
+    .catalog-controls {
+      z-index: 4;
     }
 
     .notes-disclaimer {
@@ -266,7 +481,7 @@
       min-height: 39px;
       padding: 8px 17px;
       border: 1px solid rgba(255, 255, 255, .13);
-      border-radius: 0;
+      border-radius: 999px;
       background: transparent;
       color: #c3beb4;
       cursor: pointer;
@@ -297,6 +512,7 @@
       opacity: 1;
       transform: translateY(0);
       transition: opacity .2s ease, transform .2s ease;
+      scroll-margin-top: 190px;
     }
 
     .product-grid.is-changing {
@@ -308,6 +524,7 @@
       min-width: 0;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 8px;
       background: linear-gradient(145deg, rgba(255, 255, 255, .035), transparent 48%), var(--surface);
       transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
     }
@@ -322,13 +539,26 @@
       position: relative;
       overflow: hidden;
       aspect-ratio: 4 / 5;
-      background:
-        radial-gradient(ellipse at 50% 48%, rgba(198, 166, 106, .12), transparent 48%),
-        #f2f0ec;
+      isolation: isolate;
+      background: #fff;
+    }
+
+    .product-visual::before {
+      position: absolute;
+      inset: -14px;
+      background-image: var(--product-image);
+      background-position: center;
+      background-size: cover;
+      content: "";
+      filter: blur(18px) saturate(.8);
+      opacity: .24;
+      transform: scale(1.08);
+      pointer-events: none;
     }
 
     .product-visual::after {
       position: absolute;
+      z-index: 1;
       inset: 0;
       background: linear-gradient(180deg, transparent 78%, rgba(0, 0, 0, .08));
       content: "";
@@ -336,10 +566,12 @@
     }
 
     .product-image {
+      position: relative;
+      z-index: 0;
       display: block;
       width: 100%;
       height: 100%;
-      padding: 8px;
+      padding: 0;
       object-fit: contain;
       opacity: 1;
       transition: transform .65s cubic-bezier(.2, .65, .3, 1), opacity .35s ease;
@@ -352,7 +584,7 @@
 
     .category-tag {
       position: absolute;
-      z-index: 1;
+      z-index: 2;
       top: 15px;
       left: 15px;
       padding: 6px 10px;
@@ -396,6 +628,27 @@
       padding: 15px 0;
       border-top: 1px solid rgba(255, 255, 255, .09);
       border-bottom: 1px solid rgba(255, 255, 255, .09);
+    }
+
+    .product-details {
+      margin-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, .09);
+      border-bottom: 1px solid rgba(255, 255, 255, .09);
+    }
+
+    .product-details summary {
+      padding: 10px 0;
+      color: var(--gold-light);
+      cursor: pointer;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .product-details .notes {
+      padding: 0 0 12px;
+      border: 0;
     }
 
     .notes-row {
@@ -456,6 +709,7 @@
       gap: 10px;
       overflow: hidden;
       border: 1px solid var(--gold);
+      border-radius: 5px;
       background: var(--gold);
       color: #17140e;
       font-size: 10px;
@@ -508,6 +762,7 @@
       margin-top: 70px;
       padding: clamp(30px, 6vw, 58px) 24px;
       border: 1px solid rgba(198, 166, 106, .5);
+      border-radius: 10px;
       background:
         radial-gradient(ellipse at 50% 0, rgba(198, 166, 106, .12), transparent 65%),
         rgba(255, 255, 255, .025);
@@ -662,6 +917,18 @@
       stroke-width: 1.6;
     }
 
+    @media (hover: none) {
+      .product-card:hover {
+        transform: none;
+        border-color: rgba(255, 255, 255, .09);
+        box-shadow: none;
+      }
+
+      .product-card:hover .product-image {
+        transform: none;
+      }
+    }
+
     @media (max-width: 900px) {
       .product-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -671,16 +938,61 @@
 
     @media (max-width: 560px) {
       .site-header {
-        min-height: 74px;
+        min-height: 66px;
+        padding: 10px 16px;
+      }
+
+      .brand {
+        font-size: 15px;
+      }
+
+      .brand span {
+        font-size: 7px;
+      }
+
+      .quick-nav summary {
+        min-height: 42px;
+        padding: 8px 11px;
       }
 
       .hero {
-        padding-top: 77px;
-        padding-bottom: 58px;
+        position: relative;
+        padding: 56px 18px 46px;
+      }
+
+      .hero::before {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 100%;
+        background: radial-gradient(ellipse at 50% 20%, rgba(198, 166, 106, .12), transparent 68%);
+        content: "";
+      }
+
+      .hero h1 {
+        margin-top: 20px;
+        font-size: clamp(32px, 9vw, 42px);
+      }
+
+      .eyebrow {
+        gap: 8px;
+        font-size: 8px;
+        letter-spacing: .2em;
+      }
+
+      .eyebrow::before,
+      .eyebrow::after {
+        width: 18px;
       }
 
       .hero-copy {
         font-size: 12px;
+      }
+
+      .hero-cta {
+        margin-top: 21px;
       }
 
       .shipping-highlights {
@@ -695,50 +1007,210 @@
         padding-bottom: 70px;
       }
 
+      .brands-section {
+        margin-bottom: 18px;
+      }
+
+      .brand-list {
+        margin: 0 -2px;
+        scrollbar-width: none;
+      }
+
+      .brand-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .catalog-controls {
+        position: sticky;
+        top: 66px;
+        margin: 0 -16px 24px;
+        padding: 10px 16px 9px;
+        border-bottom: 1px solid rgba(230, 208, 163, .16);
+        background: rgba(11, 11, 10, .94);
+        backdrop-filter: blur(14px);
+      }
+
       .catalog-heading {
-        align-items: center;
+        align-items: flex-start;
+        margin-bottom: 18px;
+        padding-bottom: 13px;
+      }
+
+      .catalog-heading h2 {
+        max-width: 180px;
+        font-size: 20px;
+        line-height: 1.3;
+      }
+
+      .product-count {
+        padding-top: 4px;
+        font-size: 8px;
       }
 
       .filters {
-        gap: 7px;
-        margin-bottom: 24px;
+        flex-wrap: nowrap;
+        gap: 8px;
+        margin: 0 -16px;
+        overflow-x: auto;
+        padding: 0 16px 2px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .filters::-webkit-scrollbar {
+        display: none;
       }
 
       .search-box {
         min-height: 44px;
+        margin-bottom: 10px;
+      }
+
+      .sort-control {
+        min-height: 38px;
+        margin-bottom: 9px;
+        padding-right: 9px;
+        padding-left: 11px;
+        font-size: 8px;
       }
 
       .filter-button {
-        min-height: 36px;
+        min-height: 40px;
+        flex: 0 0 auto;
         padding: 7px 11px;
         font-size: 9px;
       }
 
       .product-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .product-card {
+        display: flex;
+        flex-direction: column;
       }
 
       .product-visual {
-        aspect-ratio: 1.28 / 1;
+        aspect-ratio: 4 / 5;
+      }
+
+      .product-image {
+        object-fit: cover;
+        transform: scale(1.12);
+      }
+
+      .product-card:hover .product-image {
+        transform: scale(1.12);
       }
 
       .product-content {
-        padding: 20px;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 12px 10px 10px;
+      }
+
+      .category-tag {
+        top: 8px;
+        left: 8px;
+        padding: 5px 7px;
+        font-size: 7px;
+        letter-spacing: .09em;
+      }
+
+      .product-brand {
+        min-height: 22px;
+        margin-bottom: 4px;
+        font-size: 7px;
+        letter-spacing: .12em;
+        line-height: 1.4;
       }
 
       .product-name {
-        min-height: 0;
+        display: -webkit-box;
+        min-height: 34px;
+        margin-bottom: 4px;
+        overflow: hidden;
+        font-size: 13px;
+        line-height: 1.3;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .product-details {
+        margin-top: 6px;
+      }
+
+      .product-details summary {
+        padding: 8px 0;
+        font-size: 8px;
+      }
+
+      .notes {
+        gap: 5px;
+      }
+
+      .product-details .notes-row {
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 4px;
+        font-size: 8px;
+        line-height: 1.45;
+      }
+
+      .product-details .notes-row dt {
+        font-size: 7px;
+        letter-spacing: 0;
+      }
+
+      .product-meta {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 9px 0 10px;
+      }
+
+      .duration-label {
+        display: inline;
+        margin-right: 4px;
+        font-size: 7px;
+        letter-spacing: .08em;
+      }
+
+      .duration-value {
+        font-size: 9px;
+      }
+
+      .product-price {
+        font-size: 15px;
+      }
+
+      .order-button {
+        min-height: 40px;
+        gap: 5px;
+        margin-top: auto;
+        font-size: 8px;
+        letter-spacing: .1em;
+      }
+
+      .order-arrow {
+        font-size: 13px;
       }
 
       .notes-row {
-        grid-template-columns: 82px 1fr;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 5px;
       }
 
       .wholesale {
         margin-top: 48px;
         padding-right: 18px;
         padding-left: 18px;
+      }
+
+      .floating-whatsapp {
+        display: none;
       }
     }
 
@@ -760,6 +1232,15 @@
       FLAME FRAGANCIAS
       <span>PERFUMERÍA DE AUTOR</span>
     </a>
+    <details class="quick-nav">
+      <summary aria-label="Abrir navegación"><span class="menu-icon" aria-hidden="true"></span> Menú</summary>
+      <nav class="quick-nav-list" aria-label="Navegación principal">
+        <a href="#catalog-title">Colección</a>
+        <a href="#marcas">Marcas</a>
+        <a href="#mayorista">Ventas mayoristas</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </details>
   </header>
 
   <main>
@@ -767,6 +1248,7 @@
       <span class="eyebrow">Una esencia, una historia</span>
       <h1 id="hero-title">El arte de <em>dejar huella</em></h1>
       <p class="hero-copy">Catálogo minorista de fragancias 100% originales, solo en versiones de caja cerrada.</p>
+      <a class="hero-cta" href="#catalog-title">Explorar colección <span aria-hidden="true">↓</span></a>
       <div class="shipping-highlights" aria-label="Información de envíos y autenticidad">
         <span>🚚 Envío gratis en CABA y GBA</span>
         <span>🇦🇷 Resto del país: a consultar</span>
@@ -780,24 +1262,38 @@
         <h2 id="catalog-title">Nuestra colección</h2>
         <span class="product-count" id="product-count" aria-live="polite"></span>
       </div>
-      <label class="search-box">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="10.8" cy="10.8" r="6.8"></circle>
-          <path d="m16 16 4.2 4.2"></path>
-        </svg>
-        <input class="search-input" id="product-search" type="search" placeholder="Buscar perfume o marca..." autocomplete="off" aria-label="Buscar perfumes por nombre o marca">
-      </label>
-      <nav class="filters" aria-label="Filtrar perfumes por categoría">
-        <button class="filter-button" type="button" data-filter="Todos" aria-pressed="true">Todos</button>
-        <button class="filter-button" type="button" data-filter="Diseñador" aria-pressed="false">Diseñador</button>
-        <button class="filter-button" type="button" data-filter="Árabe" aria-pressed="false">Árabes</button>
-        <button class="filter-button" type="button" data-filter="Nicho" aria-pressed="false">Nicho</button>
-        <button class="filter-button" type="button" data-filter="Femenino" aria-pressed="false">Femeninos</button>
-      </nav>
+      <section class="brands-section" id="marcas" aria-labelledby="brands-heading">
+        <h3 class="brands-heading" id="brands-heading">Explorá por marca</h3>
+        <nav class="brand-list" id="brand-list" aria-label="Buscar perfumes por marca"></nav>
+      </section>
+      <div class="catalog-controls">
+        <label class="search-box">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="m16 16 4.2 4.2"></path>
+          </svg>
+          <input class="search-input" id="product-search" type="search" placeholder="Buscar perfume o marca..." autocomplete="off" aria-label="Buscar perfumes por nombre o marca">
+        </label>
+        <label class="sort-control" for="product-sort">
+          <span>Ordenar</span>
+          <select id="product-sort" aria-label="Ordenar fragancias">
+            <option value="featured">Recomendados</option>
+            <option value="price-ascending">Menor precio</option>
+            <option value="price-descending">Mayor precio</option>
+          </select>
+        </label>
+        <nav class="filters" aria-label="Filtrar perfumes por categoría">
+          <button class="filter-button" type="button" data-filter="Todos" aria-pressed="true">Todos</button>
+          <button class="filter-button" type="button" data-filter="Diseñador" aria-pressed="false">Diseñador</button>
+          <button class="filter-button" type="button" data-filter="Árabe" aria-pressed="false">Árabes</button>
+          <button class="filter-button" type="button" data-filter="Nicho" aria-pressed="false">Nicho</button>
+          <button class="filter-button" type="button" data-filter="Femenino" aria-pressed="false">Femeninos</button>
+        </nav>
+      </div>
       <p class="notes-disclaimer">Las notas son orientativas y pueden variar según concentración, reformulación y mercado. Algunas versiones no pudieron identificarse con seguridad.</p>
       <div class="product-grid" id="product-grid" aria-live="polite"></div>
     </section>
-    <section class="wholesale" aria-labelledby="wholesale-title">
+    <section class="wholesale" id="mayorista" aria-labelledby="wholesale-title">
       <span class="eyebrow">Una oportunidad exclusiva</span>
       <h2 id="wholesale-title">📈 Ventas mayoristas</h2>
       <p class="wholesale-copy">Compras desde 6 unidades. Combiná fragancias y marcas. Consultá descuentos por cantidad.</p>
@@ -805,7 +1301,7 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="contacto">
     <div class="footer-brand">FLAME FRAGANCIAS</div>
     <nav class="footer-links" aria-label="Redes y contacto">
       <a class="footer-link" href="https://www.instagram.com/flame.fragancias?psln=aGZmbG53eXpwYjZn" target="_blank" rel="noopener noreferrer" aria-label="Seguir Flame Fragancias en Instagram">
@@ -915,7 +1411,7 @@
       "Yum Yum": { Salida: "Frutos rojos, cítricos, notas dulces", Corazón: "Flores blancas, caramelo", Fondo: "Vainilla, almizcle, ámbar" },
       "Club de Nuit Woman": { Salida: "Naranja, pomelo, bergamota", Corazón: "Rosa, jazmín, lichi", Fondo: "Pachuli, vainilla, almizcle" }
     };
-    notasPorFragancia["Baccarat Rouge 540 tester"] = notasPorFragancia["Baccarat Rouge 540"];
+   notasPorFragancia["Baccarat Rouge 540 tester"] = notasPorFragancia["Baccarat Rouge 540"];
    const imagenesPorFragancia = {
   "Dior Sauvage EDP": "dior-sauvage-edp.jpg",
   "Dior Pour Homme Intense": "dior-homme-intense.jpg",
@@ -1149,6 +1645,7 @@
     const productCount = document.querySelector("#product-count");
     const filterButtons = document.querySelectorAll(".filter-button");
     const searchInput = document.querySelector("#product-search");
+    const sortSelect = document.querySelector("#product-sort");
     const currencyFormatter = new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",
@@ -1156,6 +1653,7 @@
     });
     let activeFilter = "Todos";
     let activeSearch = "";
+    let activeSort = "featured";
     let renderTimer;
 
     function normalizeSearchTerm(value) {
@@ -1173,6 +1671,11 @@
     }
 
     function createNotes(perfume) {
+      const details = document.createElement("details");
+      details.className = "product-details";
+      details.open = window.matchMedia("(min-width: 561px)").matches;
+      details.append(createTextElement("summary", "", "Notas de la fragancia"));
+
       const list = document.createElement("dl");
       list.className = "notes";
 
@@ -1188,7 +1691,8 @@
         list.append(row);
       }
 
-      return list;
+      details.append(list);
+      return details;
     }
 
     function createProductCard(perfume) {
@@ -1197,6 +1701,7 @@
 
       const visual = document.createElement("div");
       visual.className = "product-visual";
+      visual.style.setProperty("--product-image", `url("${perfume.imagen}")`);
       const image = document.createElement("img");
       image.className = "product-image";
       image.src = perfume.imagen;
@@ -1247,6 +1752,11 @@
           || normalizeSearchTerm(`${perfume.nombre} ${perfume.marca}`).includes(searchTerm);
         return matchesCategory && matchesSearch;
       });
+      if (activeSort === "price-ascending") {
+        visiblePerfumes.sort((first, second) => first.precio - second.precio || first.id - second.id);
+      } else if (activeSort === "price-descending") {
+        visiblePerfumes.sort((first, second) => second.precio - first.precio || first.id - second.id);
+      }
       const fragment = document.createDocumentFragment();
 
       for (const perfume of visiblePerfumes) {
@@ -1261,6 +1771,15 @@
       productCount.textContent = `${visiblePerfumes.length} ${visiblePerfumes.length === 1 ? "fragancia" : "fragancias"}`;
     }
 
+    const brandList = document.querySelector("#brand-list");
+    const brands = [...new Set(perfumes.map((perfume) => perfume.marca))];
+    for (const brand of brands) {
+      const button = createTextElement("button", "brand-chip", brand);
+      button.type = "button";
+      button.dataset.brand = brand;
+      brandList.append(button);
+    }
+
     function scheduleCatalogRender() {
       window.clearTimeout(renderTimer);
       productGrid.classList.add("is-changing");
@@ -1270,8 +1789,35 @@
       }, 120);
     }
 
+    document.querySelectorAll(".quick-nav-list a").forEach((link) => {
+      link.addEventListener("click", () => {
+        document.querySelector(".quick-nav").open = false;
+      });
+    });
+
+    brandList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-brand]");
+      if (!button) {
+        return;
+      }
+
+      activeFilter = "Todos";
+      filterButtons.forEach((filterButton) => {
+        filterButton.setAttribute("aria-pressed", String(filterButton.dataset.filter === "Todos"));
+      });
+      activeSearch = button.dataset.brand;
+      searchInput.value = activeSearch;
+      scheduleCatalogRender();
+      productGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
     searchInput.addEventListener("input", () => {
       activeSearch = searchInput.value;
+      scheduleCatalogRender();
+    });
+
+    sortSelect.addEventListener("change", () => {
+      activeSort = sortSelect.value;
       scheduleCatalogRender();
     });
 
